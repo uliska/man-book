@@ -10,9 +10,11 @@ script="$base/man2pdf"
 # default is to have them in the script's directory
 # TODO: Make these configurable through a CL option:
 # Book source
-book="$base/lpic-1.md"
+book="$base/sample.md"
 # Repository for the generated PDF manpages
 repo="$base/manpages"
+# Output file
+output="$HOME/manpages.pdf"
 
 # collect all \man{} entries
 lines=$(grep "\\\\man" $book)
@@ -31,4 +33,6 @@ done
 
 echo "Step 2: use Pandoc to create the book"
 cd $base
-pandoc --toc -o manpages.pdf $book
+pandoc --toc -o $output $book
+echo "Open result with"
+echo "  xdg-open $output"
