@@ -1,0 +1,23 @@
+#!/bin/bash
+# convert a manpage to PDF
+# Arguments:
+# 1: command to produce manpage for
+# 2: directory to store result to
+#
+# Only produce a PDF if it doesn't already exists
+
+filename=$(echo $1 | sed 's/\./-'/)
+target="$2/$filename"
+if [ ! -f "$target.pdf" ]
+then
+  # manpage not converted yet
+  # try producing a .ps file
+  man -t $1 > "$target.ps"
+  if [ $? == 0 ]
+  then
+    # Only produce pdf when previous command was successful
+    # otherwise man -t produces an empty page.
+    ps2pdf "$target.ps"
+  fi
+  rm "$target.ps"
+fi

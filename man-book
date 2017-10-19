@@ -1,0 +1,34 @@
+#!/bin/bash
+# Produce a book containing manpages
+# using a Markdown file processed by pandoc
+#
+
+base="$(dirname $(realpath $0))"
+script="$base/man2pdf"
+
+# Configure filenames and paths,
+# default is to have them in the script's directory
+# TODO: Make these configurable through a CL option:
+# Book source
+book="$base/lpic-1.md"
+# Repository for the generated PDF manpages
+repo="$base/manpages"
+
+# collect all \man{} entries
+lines=$(grep "\\\\man" $book)
+
+echo "man-book generator"
+echo "=================="
+echo "Step 1: generate manpages"
+cd $repo
+for l in $lines
+do
+  # extract the command name from the \man{} entry
+  cmd=$(echo $l | sed 's/\(\\man{\)\(.*\)\(}\)/\2/')
+  # generate a PDF from the manpage
+  $script $cmd $repo
+done
+
+echo "Step 2: use Pandoc to create the book"
+cd $base
+pandoc --toc -o manpages.pdf $book
