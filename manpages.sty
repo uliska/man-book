@@ -1,0 +1,20 @@
+% Package for the man-book script
+% Defines a command to conditionally include a pdf
+% and create a TOC entry for it.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{manpages}
+
+\RequirePackage{pdfpages}
+\RequirePackage{xstring}
+
+\newcommand{\man}[1]{
+  \StrSubstitute{manpages/#1}{.}{-}[\temp]%
+  \IfFileExists{\temp.pdf}{%
+    \phantomsection%
+    \addcontentsline{toc}{subsubsection}{#1}%
+    \includepdf{\temp}}
+  {%
+    \phantomsection%
+    \addcontentsline{toc}{subsubsection}{#1 -- keine manpage vorhanden}%
+  }
+}
