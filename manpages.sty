@@ -12,7 +12,7 @@
   \IfFileExists{\temp.pdf}{%
     \phantomsection%
     \addcontentsline{toc}{subsubsection}{#1}%
-    \includepdf{\temp}}
+    \includepdf[pages=-]{\temp}}
   {%
     \phantomsection%
     \addcontentsline{toc}{subsubsection}{#1 -- keine manpage vorhanden}%
